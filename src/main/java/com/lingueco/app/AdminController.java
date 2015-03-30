@@ -28,6 +28,4 @@ public class AdminController {
 		
 		return this.viewPath;
 	}
-	
-	
 }
