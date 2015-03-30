@@ -11,11 +11,23 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/admin")
 public class AdminController {
 	
+	private String viewPath = "adminController/main";
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(Locale locale, Model model) {
 		
-		model.addAttribute("text", "AdminController - tutaj będzie panel zarządzania, dla administratora");
+		model.addAttribute("action", "default");
 		
-		return "adminController/main";
+		return this.viewPath;
 	}
+	
+	@RequestMapping(value = "/user", method = RequestMethod.GET)
+	public String user(Locale locale, Model model) {
+		
+		model.addAttribute("action", "user");
+		
+		return this.viewPath;
+	}
+	
+	
 }

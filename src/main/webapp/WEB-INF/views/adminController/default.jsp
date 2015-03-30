@@ -1,0 +1,1 @@
+<h2>Domyślny widok dla akcji.</h2>
