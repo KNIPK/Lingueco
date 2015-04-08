@@ -11,11 +11,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/exercises")
 public class ExercisesController {
 	
+	private String viewPath = "controller/exercises/";
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(Locale locale, Model model) {
 		
 		model.addAttribute("text", "ExercisesController - tutaj będą ćwiczenia do list słówek");
 		
-		return "exercisesController/main";
+		return this.viewPath + "main";
 	}
 }

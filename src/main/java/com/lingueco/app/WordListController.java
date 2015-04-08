@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller
 @RequestMapping("/wordlist")
 public class WordListController {
+	
+	private String viewPath = "controller/wordlist/";
+	
 	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 	
 	/**
@@ -22,7 +25,7 @@ public class WordListController {
 	public String home(Locale locale, Model model) {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		
-		return "wordListController/main";
+		return this.viewPath + "main";
 	}
 	
 	@RequestMapping(value="/{word}", method = RequestMethod.GET)
@@ -30,6 +33,6 @@ public class WordListController {
 		logger.info("Welcome home! The client locale is {}.", locale);
 		model.addAttribute("word", word);
 		
-		return "wordListController/addWord";
+		return this.viewPath + "addWord";
 	}
 }

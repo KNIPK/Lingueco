@@ -19,6 +19,7 @@ import com.lingueco.repository.Tool;
 @RequestMapping("/test")
 public class TestController {
 	
+	private String viewPath = "controller/test/";	
 	
 	@Autowired PersonRepository personRepository;
 
@@ -26,7 +27,7 @@ public class TestController {
 	
 	@RequestMapping(value ="/", method = RequestMethod.GET)
 	public ModelAndView run() {
-		ModelAndView model = new ModelAndView("testController/test");
+		ModelAndView model = new ModelAndView(this.viewPath + "test");
 		
 		Transaction tx = graphDatabase.beginTx();
 		Person tomek = new Person("Tomek");

@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/")
 public class MainController {
 	
+	private String viewPath = "controller/main/";
+	
 	private static final Logger logger = LoggerFactory.getLogger(MainController.class);
 	
 	/**
@@ -28,6 +30,6 @@ public class MainController {
 		
 		model.addAttribute("text", "MainController - tutaj będzie albo dashbord użytkownika albo panel logowania");
 		
-		return "mainController/main";
+		return this.viewPath + "main";
 	}
 }
