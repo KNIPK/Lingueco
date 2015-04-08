@@ -6,6 +6,6 @@
 	<title>AdminController</title>
 </head>
 <body>
-	<h1>${text}</h1>
+	<h2>Panel administratora</h2>
 </body>
 </html>
