@@ -6,14 +6,6 @@
 	<title>AdminController</title>
 </head>
 <body>
-
-<jsp:include page="../include/header.jsp" />
-
-<c:if test="${not action}">
-   <jsp:include page="${action}.jsp" />
-</c:if>
-
- <jsp:include page="../include/footer.jsp" />
- 
+	<h2>Panel administratora</h2>
 </body>
 </html>

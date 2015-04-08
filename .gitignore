@@ -1,0 +1,9 @@
+target/
+target/m2e-wtp/
+bin/
+.settings/
+
+.classpath
+.gitignore~
+.project
+.springBeans

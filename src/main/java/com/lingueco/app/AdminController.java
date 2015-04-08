@@ -11,21 +11,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @RequestMapping("/admin")
 public class AdminController {
 	
-	private String viewPath = "adminController/main";
+	private String viewPath = "adminController/";
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String main(Locale locale, Model model) {
 		
-		model.addAttribute("action", "default");
-		
-		return this.viewPath;
+		return this.viewPath + "main";
 	}
 	
 	@RequestMapping(value = "/user", method = RequestMethod.GET)
 	public String user(Locale locale, Model model) {
 		
-		model.addAttribute("action", "user");
-		
-		return this.viewPath;
+		return this.viewPath + "user";
 	}
 }
