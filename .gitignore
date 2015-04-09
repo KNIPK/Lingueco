@@ -1,5 +1,8 @@
 bin/
 .settings/
+target/
+target/*
+
 
 .classpath
 .gitignore~
