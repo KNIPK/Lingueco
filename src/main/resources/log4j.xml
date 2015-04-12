@@ -11,7 +11,7 @@
 	</appender>
 	
 	<!-- Application Loggers -->
-	<logger name="com.lingueco.app">
+	<logger name="com.lingueco">
 		<level value="info" />
 	</logger>
 	
