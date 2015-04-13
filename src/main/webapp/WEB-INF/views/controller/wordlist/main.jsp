@@ -3,7 +3,7 @@
 <%@ page session="false" %>
 <html>
 <head>
-	<title>Zarządzanie listą słówek</title>
+	<title>Zarządzanie listami słówek</title>
 </head>
 <body>
 <h1>
