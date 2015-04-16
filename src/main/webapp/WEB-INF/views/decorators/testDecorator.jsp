@@ -1,11 +1,5 @@
-<html>
- <head>
- <title><sitemesh:write property='title'/></title>
- <sitemesh:write property='head'/>
- </head>
+<jsp:include page="../include/header.jsp" />
  
- <body>
- This is the test body in decorator:
- <sitemesh:write property='body'/>
- </body>
-</html>
+<sitemesh:write property='body'/>
+ 
+<jsp:include page="../include/footer.jsp" />

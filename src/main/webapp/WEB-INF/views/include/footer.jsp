@@ -1,1 +1,2 @@
-<h1>Stopka - dolaczona</h1>
+ </body>
+</html>
