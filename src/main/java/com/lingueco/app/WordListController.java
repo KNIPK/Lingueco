@@ -1,6 +1,7 @@
 package com.lingueco.app;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
@@ -16,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.lingueco.repository.Person;
 import com.lingueco.repository.Word;
 import com.lingueco.repository.WordList;
 import com.lingueco.repository.WordListRepository;
@@ -40,14 +40,32 @@ public class WordListController {
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
-		logger.info("Main wordlists page");
+		
+		Transaction tx = graphDatabase.beginTx();
 
+		List<WordList> wordLists = new ArrayList<WordList>();
+		
+		try {
+			for(WordList wl: wordListRepository.getLists()){
+				wordLists.add(wl);
+			tx.success();
+			}	
+			
+		} catch (Exception e) {
+			tx.failure();
+			System.out.println(e);
+		} finally {
+			tx.close();
+		}
+
+		model.addAttribute("wordLists", wordLists);
+		
+		
 		return this.viewPath + "main";
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
 	public String addWord(Locale locale, Model model) {
-		logger.info("Add new wordlist (GET)");
 
 		return this.viewPath + "addList";
 	}
@@ -56,14 +74,14 @@ public class WordListController {
 	public String addList(@RequestParam String name,
 			@RequestParam String langA, @RequestParam String langB,
 			@RequestParam String desc, Locale locale, Model model) {
-		logger.info("Add new wordlist from form (POST)");
+
 
 		Transaction tx = graphDatabase.beginTx();
-		WordList wl = new WordList(name, desc, langA, langB);
+		WordList wordList = new WordList(name, desc, langA, langB);
 
 		try {
 
-			wordListRepository.save(wl);
+			wordListRepository.save(wordList);
 			
 			tx.success();
 		} catch (Exception e) {
@@ -72,30 +90,41 @@ public class WordListController {
 		} finally {
 			tx.close();
 		}
-		System.out.println(wl.getName() + " created!");
-		model.addAttribute("wordlist", wl);
-		model.addAttribute("add", new String("added"));
-		return this.viewPath + "listView";
+		
+		return "redirect:/wordlists/"+name; 
 	}
 
 	@RequestMapping(value = "/{name}", method = RequestMethod.GET)
 	public String listView(@PathVariable String name, Locale locale, Model model) {
-		logger.info("List view (" + name + ")");
+
 
 		Transaction tx = graphDatabase.beginTx();
-		WordList wl = new WordList();
+		WordList wordList = new WordList();
+		//List<Word> words = new ArrayList<Word>();
+		HashMap<Word, List<Word>> words = new HashMap<Word, List<Word>>();
 		try {
-			wl = wordListRepository.getListByName(name);
+			wordList = wordListRepository.getListByName(name);
 			tx.success();
+			
+			
+			for(Word gw: wordListRepository.getWords(name,wordList.getLangA())) {
+				ArrayList<Word> translations = new ArrayList<Word>();
+				for(Word translation : wordRepository.getTranslations(gw.value,wordList.getLangB())) {
+					translations.add(translation);
+				}
+				
+				words.put(gw, translations);
+			}	
+			
 		} catch (Exception e) {
 			tx.failure();
 			System.out.println(e);
 		} finally {
 			tx.close();
 		}
-		System.out.println(wl.getName() + " found!");
 
-		model.addAttribute("wordlist", wl);
+		model.addAttribute("wordlist", wordList);
+		model.addAttribute("words", words);
 		return this.viewPath + "listView";
 	}
 
@@ -103,34 +132,30 @@ public class WordListController {
 	public String addWord(@RequestParam String name,
 			@RequestParam String valA, @RequestParam String valB,
 			Locale locale, Model model) {
-		logger.info("Add word (" + valA + ") to list " + name + "!");
+
 
 		Transaction tx = graphDatabase.beginTx();
 		
-		WordList wl = new WordList();
-		Word w = new Word();
-		Word t = new Word();
-		List<Word> words = new ArrayList<Word>();
+		WordList wordList = new WordList();
+		Word word = new Word();
+		Word translation = new Word();
 		
 		try {
-			wl = wordListRepository.getListByName(name);
-			w = new Word(valA, wl.getLangA());
-			t = new Word(valB, wl.getLangB());
+			wordList = wordListRepository.getListByName(name);
+			word = new Word(valA, wordList.getLangA());
+			translation = new Word(valB, wordList.getLangB());
 
-			wordRepository.save(w);
-			wordRepository.save(t);
-			wordRepository.createRelTranslation(valA, valB, wl.getLangA(), wl.getLangB());
+			wordRepository.save(word);
+			wordRepository.save(translation);
+			if(!wordRepository.isRelatedTranslation(valA,valB))
+				wordRepository.createRelTranslation(valA, valB, wordList.getLangA(), wordList.getLangB());
 			
-			wl.word(w);
-			wl.word(t);
+			wordList.word(word);
+			wordList.word(translation);
 
-			wordListRepository.save(wl);
-			
-			for(Word gw: wordListRepository.getWords(name,wl.getLangA())) {
-				words.add(gw);
-			}	
-			
-			
+			wordListRepository.save(wordList);
+
+
 			tx.success();
 		} catch (Exception e) {
 			tx.failure();
@@ -138,13 +163,8 @@ public class WordListController {
 		} finally {
 			tx.close();
 		}
-		
-		System.out.println(wl.getName() + " found! Word ("+w.getValue()+") added! ");
-		
-		model.addAttribute("wordlist", wl);
-		model.addAttribute("words", words);
-		
-		return this.viewPath + "listView";
-	}
+
+		return "redirect:/wordlists/"+name;
+		}
 
 }

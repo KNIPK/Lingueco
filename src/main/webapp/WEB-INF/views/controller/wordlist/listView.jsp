@@ -12,29 +12,30 @@
 
 
 <h1>${wordlist.name} (${wordlist.wordsAmount})</h1>
-<c:if test="${not empty add}"> Utworzono liste! Zacznij dodawac do niej slowka!</c:if>
-<c:if test="${privacy == 0}"> (Lista prywatna)</c:if>
-
-<h2>${wordlist.desc}</h2>
-<h3>( ${wordlist.langA} > ${wordlist.langB} )</h3>
-
-<c:if test="${empty wordlist.name}"> NIE ZNALEZIONO LISTY!</c:if> 
-
-	<c:forEach items="${words}" var="word">
-	            ${word.value} <br>
-	 </c:forEach>
+<h4>${wordlist.desc}</h4>
 
 <form method="POST" action="${pageContext.request.contextPath}/wordlists/${wordlist.name}/">
 		<table>
-			<tr>
-				<td>${wordlist.langA}:</td><td>${wordlist.langB}:</td>
-			</tr>
+				<tr>
+					<td><b>${wordlist.langA}</b></td><td><b>${wordlist.langB}</b></td>
+				</tr>
+				<c:forEach items="${words}" var="word">
+				            <tr>
+				            	<td>${word.key.value}</td>
+				            	<td>
+				            		<c:forEach items="${word.value}" var="translation">
+				            			${translation.value}  
+				            		</c:forEach>
+				            	</td>
+				            <tr>
+				</c:forEach>
+
 			<tr>
 				<td><input name="valA" /></td>
 				<td><input name="valB" /></td>
+				<td><input type="submit" /></td>
 			</tr>
 		</table>
-		<input type="submit" />
 		<input type="hidden" name="name" value="${wordlist.name}" />
 </form>
 

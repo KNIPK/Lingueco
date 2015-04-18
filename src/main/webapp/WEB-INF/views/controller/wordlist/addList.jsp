@@ -4,34 +4,38 @@
 <%@ page session="false"%>
 <html>
 <head>
-<title>Create new list</title>
+<title>Nowa lista</title>
 </head>
 <body>
-	<h1>Create new list:</h1>
+	<h1>Utwórz nową listę:</h1>
 	<form method="POST" action="${pageContext.request.contextPath}/wordlists/add/">
 		<table>
 			<tr>
-				<td>List name:</td>
+				<td>Nazwa listy:</td>
 				<td><input name="name" /></td>
 			</tr>
 			<tr>
-				<td>List desc:</td>
+				<td>Opis listy:</td>
 				<td><input name="desc" /></td>
 			</tr>
 			<tr>
-				<td>First language:</td>
+				<td>Język ojczysty:</td>
 				<td><select name="langA">
-						<option value="PL">Polish</option>
-						<option value="ENG">English</option>
-						<option value="GER">German</option>
+						<option value="POL">Polski</option>
+						<option value="ENG">Angielski</option>
+						<option value="GER">Niemiecki</option>
+						<option value="FRE">Francuski</option>
+						<option value="SRP">Serbski</option>
 				</select></td>
 			</tr>
 			<tr>
-				<td>Second language:</td>
+				<td>Język którego się uczysz:</td>
 				<td><select name="langB">
-						<option value="ENG">English</option>
-						<option value="GER">German</option>
-						<option value="PL">Polish</option>
+						<option value="POL">Polski</option>
+						<option value="ENG">Angielski</option>
+						<option value="GER">Niemiecki</option>
+						<option value="FRE">Francuski</option>
+						<option value="SRP">Serbski</option>
 				</select></td>
 			</tr>
 		</table>

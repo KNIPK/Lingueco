@@ -17,4 +17,6 @@ public interface WordListRepository extends CrudRepository<WordList, String> {
     @Query("MATCH (a:WordList {name:{name}}) MATCH (a)-[:WORD]-(p:Word) WHERE p.lang =~ {lang} RETURN p")
     Iterable<Word> getWords(@Param("name") String name, @Param("lang") String lang);
     
+    @Query("MATCH (a:WordList) Return a")
+    Iterable<WordList> getLists();
 }
