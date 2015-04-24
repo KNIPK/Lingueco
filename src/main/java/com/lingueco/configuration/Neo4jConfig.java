@@ -1,7 +1,6 @@
 package com.lingueco.configuration;
 import javax.annotation.Resource;
 
-import org.neo4j.graphdb.GraphDatabaseService;
 import org.neo4j.graphdb.factory.GraphDatabaseFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,6 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.data.neo4j.config.EnableNeo4jRepositories;
 import org.springframework.data.neo4j.config.Neo4jConfiguration;
+import org.springframework.data.neo4j.rest.SpringRestGraphDatabase;
 
 
 @Configuration
@@ -24,8 +24,9 @@ public class Neo4jConfig extends Neo4jConfiguration {
 	}
 	
     @Bean
-    public GraphDatabaseService graphDatabaseService() {
-    	return new GraphDatabaseFactory().newEmbeddedDatabase(env.getProperty("db.location"));
+    public SpringRestGraphDatabase graphDatabaseService() {
+    	
+    	return new SpringRestGraphDatabase(env.getProperty("db.location"), env.getProperty("db.user"), env.getProperty("db.password"));    	
     }
     
 }
