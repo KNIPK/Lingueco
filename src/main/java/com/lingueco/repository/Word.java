@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.neo4j.graphdb.Direction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -13,6 +14,9 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 @NodeEntity
 public class Word {
 
+	@Autowired
+	WordRepository wordRepository;
+	
 	@GraphId
 	public Long id;
 
@@ -26,8 +30,7 @@ public class Word {
 	@RelatedTo(type = "WORD", direction = Direction.INCOMING)
 	public @Fetch Set<WordList> lists;
 	
-	@RelatedTo(type = "TRANSLATION", direction = Direction.BOTH)
-	public @Fetch Set<Word> translations;
+
 
 	public Word() {
 	}
@@ -37,17 +40,10 @@ public class Word {
 		this.lang = lang;
 	}
 
-	public void list(WordList wl) {
-		if (lists == null) {
-			lists = new HashSet<WordList>();
-		}
-		lists.add(wl);
-	}
+
 	public void translation(Word w) {
-		if (translations == null) {
-			translations = new HashSet<Word>();
-		}
-		translations.add(w);
+		if(!wordRepository.isRelatedTranslation(this.value, w.getValue()) )
+			wordRepository.createRelTranslation(this.value, w.getValue(), this.getLang(), w.getLang());
 	}
 
 	public Long getId() {
@@ -90,19 +86,12 @@ public class Word {
 		this.lists = lists;
 	}
 
-	public Set<Word> getTranslations() {
-		return translations;
-	}
 
-	public void setTranslations(Set<Word> translations) {
-		this.translations = translations;
-	}
 
 	@Override
 	public String toString() {
 		return "Word [id=" + id + ", value=" + value + ", lang=" + lang
-				+ ", learningRate=" + learningRate + ", lists=" + lists
-				+ ", translations=" + translations + "]";
+				+ ", learningRate=" + learningRate + ", lists=" + lists+"]";
 	}
 	
 	

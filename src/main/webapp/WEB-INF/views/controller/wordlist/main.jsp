@@ -12,7 +12,10 @@
 	<table>
 	
 	<c:forEach items="${wordLists}" var="wordList">
-	            <tr> <td> <a href="${pageContext.request.contextPath}/wordlists/${wordList.name}">${wordList.name}</a> </td> </tr>
+	            <tr>
+	            	<td> <a href="${pageContext.request.contextPath}/wordlists/${wordList.name}">${wordList.name}</a> </td>
+	            	<td> ${wordList.wordsAmount} </td>
+	            </tr>
 	 </c:forEach>
 	</table>
 

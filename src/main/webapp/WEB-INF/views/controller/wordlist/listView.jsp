@@ -6,7 +6,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>${wordlist.name}</title>
 </head>
 <body>
 
@@ -23,11 +23,13 @@
 				            <tr>
 				            	<td>${word.key.value}</td>
 				            	<td>
-				            		<c:forEach items="${word.value}" var="translation">
-				            			${translation.value}  
+				            		<c:forEach items="${word.value}" var="translation" varStatus="loopStatus">
+				            			${translation.value}
+				                      		<a href="${pageContext.request.contextPath}/wordlists/${wordlist.name}/${translation.value}-${word.key.value}/delete">(-)</a>
+				            			${!loopStatus.last?'/':''}
 				            		</c:forEach>
 				            	</td>
-				            <tr>
+<tr>
 				</c:forEach>
 
 			<tr>
@@ -38,6 +40,8 @@
 		</table>
 		<input type="hidden" name="name" value="${wordlist.name}" />
 </form>
+
+<a href="${pageContext.request.contextPath}/wordlists/${wordlist.name}/edit">Edytuj liste</a>
 
 </body>
 </html>

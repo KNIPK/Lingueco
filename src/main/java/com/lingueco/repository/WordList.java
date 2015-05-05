@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.neo4j.graphdb.Direction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
@@ -31,9 +32,6 @@ public class WordList {
 	public int wordsAmount;
 
 	public double learningRate;
-
-	@RelatedTo(type = "OWNS", direction = Direction.INCOMING)
-	public @Fetch Set<Person> owners;
 	
 	@RelatedTo(type = "WORD", direction = Direction.OUTGOING)
 	public @Fetch Set<Word> words;
@@ -48,13 +46,6 @@ public class WordList {
 		this.langB = langB;
 	}
 
-	public void owner(Person person) {
-		if (owners == null) {
-			owners = new HashSet<Person>();
-		}
-		owners.add(person);
-	}
-
 	public void word(Word w) {
 		if (words== null) {
 			words = new HashSet<Word>();
@@ -62,7 +53,6 @@ public class WordList {
 		words.add(w);
 	}
 
-	
 	public String getDesc() {
 		return desc;
 	}
@@ -111,14 +101,6 @@ public class WordList {
 		this.learningRate = learningRate;
 	}
 
-	public Set<Person> getOwners() {
-		return owners;
-	}
-
-	public void setOwners(Set<Person> owner) {
-		this.owners = owner;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -135,12 +117,14 @@ public class WordList {
 		this.name = name;
 	}
 
-	@Override
 	public String toString() {
-		return "WordList [id=" + id + ", name=" + name + ", desc=" + desc
-				+ ", langA=" + langA + ", langB=" + langB + ", privacy="
-				+ privacy + ", wordsAmount=" + wordsAmount + ", learningRate="
-				+ learningRate + ", owners=" + owners + "]";
+		return "WordList [id="
+				+ id + ", name=" + name + ", desc=" + desc + ", langA=" + langA
+				+ ", langB=" + langB + ", privacy=" + privacy
+				+ ", wordsAmount=" + wordsAmount + ", learningRate="
+				+ learningRate + ", words=" + words + "]";
 	}
+
+
 
 }

@@ -6,8 +6,7 @@ import java.util.List;
 import java.util.Locale;
 
 import org.neo4j.graphdb.Transaction;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.core.GraphDatabase;
 import org.springframework.stereotype.Controller;
@@ -35,8 +34,6 @@ public class WordListController {
 	@Autowired
 	GraphDatabase graphDatabase;
 
-	private static final Logger logger = LoggerFactory
-			.getLogger(MainController.class);
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
@@ -46,8 +43,10 @@ public class WordListController {
 		List<WordList> wordLists = new ArrayList<WordList>();
 		
 		try {
-			for(WordList wl: wordListRepository.getLists()){
+			
+			for(WordList wl: wordListRepository.getListsByUser()){
 				wordLists.add(wl);
+				wl.setWordsAmount(wordListRepository.getWordsAmount(wl.getName(),wl.getLangB()));
 			tx.success();
 			}	
 			
@@ -65,7 +64,7 @@ public class WordListController {
 	}
 
 	@RequestMapping(value = "/add", method = RequestMethod.GET)
-	public String addWord(Locale locale, Model model) {
+	public String addList(Locale locale, Model model) {
 
 		return this.viewPath + "addList";
 	}
@@ -100,17 +99,26 @@ public class WordListController {
 
 		Transaction tx = graphDatabase.beginTx();
 		WordList wordList = new WordList();
-		//List<Word> words = new ArrayList<Word>();
+
 		HashMap<Word, List<Word>> words = new HashMap<Word, List<Word>>();
 		try {
 			wordList = wordListRepository.getListByName(name);
+			wordList.setWordsAmount(wordListRepository.getWordsAmount(name,wordList.getLangB()));
 			tx.success();
 			
 			
 			for(Word gw: wordListRepository.getWords(name,wordList.getLangA())) {
 				ArrayList<Word> translations = new ArrayList<Word>();
-				for(Word translation : wordRepository.getTranslations(gw.value,wordList.getLangB())) {
+				for(Word translation : wordRepository.getTranslations(gw.value,wordList.getName())) {
 					translations.add(translation);
+				}
+				
+				if(translations.isEmpty()){
+					wordRepository.removeWordFromList(gw.getValue(), wordList.getName());
+					if(wordRepository.getWordRelationsNumber(gw.getValue()) == 0 ){	// TUTAJ JEST B£¥D
+						wordRepository.deleteNode(gw.getValue(), wordList.getLangA());
+						System.out.println("USUNIETO SLOWO BEZ TRANSLACJI!");
+					}
 				}
 				
 				words.put(gw, translations);
@@ -167,4 +175,74 @@ public class WordListController {
 		return "redirect:/wordlists/"+name;
 		}
 
+	@RequestMapping(value = "/{name}/edit", method = RequestMethod.GET)
+	public String listEdit(@PathVariable String name, Locale locale, Model model) {
+
+
+		Transaction tx = graphDatabase.beginTx();
+		WordList wordList = new WordList();
+
+		try{
+			wordList = wordListRepository.getListByName(name);
+			tx.success();	
+		} catch (Exception e) {
+			tx.failure();
+			System.out.println(e);
+		} finally {
+			tx.close();
+		}
+
+		model.addAttribute("wordlist", wordList);
+		return this.viewPath + "listEdit";
+	}
+	
+	@RequestMapping(value = "/{name}/edit", method = RequestMethod.POST)
+	public String listEdit(@RequestParam String oldName,@RequestParam String newName,
+							@RequestParam String newDesc, Locale locale, Model model) {
+
+		Transaction tx = graphDatabase.beginTx();
+
+
+		try{
+			wordListRepository.editWordList(oldName,newName,newDesc);
+			tx.success();
+		} catch (Exception e) {
+			tx.failure();
+			System.out.println(e);
+		} finally {
+			tx.close();
+		}
+
+
+		return "redirect:/wordlists/"+newName; 
+	}
+	
+	@RequestMapping(value = "/{listname}/{translationValue}-{wordValue}/delete", method = RequestMethod.GET)
+	public String wordDelete(@PathVariable String listname,@PathVariable String wordValue,@PathVariable String translationValue, Locale locale, Model model) {
+
+		Transaction tx = graphDatabase.beginTx();
+
+		try{
+			wordRepository.removeWordFromList(translationValue, listname);
+			if(wordRepository.getWordRelationsNumber(wordValue) == 0){		
+				wordRepository.deleteWord(wordValue,listname);
+				wordRepository.deleteNodeWithRelations(wordValue,listname);
+			}
+
+			if(wordRepository.getWordRelationsNumber(translationValue) == 0)			
+				wordRepository.deleteNodeWithRelations(translationValue,listname);
+			
+			tx.success();
+		} catch (Exception e) {
+			tx.failure();
+			System.out.println(e);
+		} finally {
+			tx.close();
+		}
+
+		return "redirect:/wordlists/"+listname; 
+	}
+	
 }
+
+

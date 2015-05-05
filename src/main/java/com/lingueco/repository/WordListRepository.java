@@ -6,7 +6,9 @@ import org.springframework.data.repository.query.Param;
 
 public interface WordListRepository extends CrudRepository<WordList, String> {
 
-    
+	//Jak na razie wypisuje wszystkie listy. Potem uwzglednimy uzytkownikow
+    @Query("MATCH (a:WordList) Return a ORDER BY a.name")
+    Iterable<WordList> getListsByUser();
     
     @Query("MATCH (a:WordList {name:{name}}) MATCH (a)-[:OWNS]-(p:Person) RETURN p")
     Iterable<Person> getOwners(@Param("name") String name);
@@ -17,6 +19,10 @@ public interface WordListRepository extends CrudRepository<WordList, String> {
     @Query("MATCH (a:WordList {name:{name}}) MATCH (a)-[:WORD]-(p:Word) WHERE p.lang =~ {lang} RETURN p")
     Iterable<Word> getWords(@Param("name") String name, @Param("lang") String lang);
     
-    @Query("MATCH (a:WordList) Return a")
-    Iterable<WordList> getLists();
+	@Query("MATCH (w:Word {lang:{lang}})-[:WORD]-(:WordList {name:{name}}) RETURN count(w)")
+	int getWordsAmount(@Param("name")String name,@Param("lang")String lang);
+	
+    @Query("MATCH (wl:WordList {name:{name}}) SET wl.name={newName}, wl.desc={newDesc}")
+	void editWordList(@Param("name")String name, @Param("newName")String newName,@Param("newDesc")String newDesc);
+    
 }
