@@ -40,7 +40,7 @@
                     <td><c:out value="${user.username}"/></td>
                     <td><c:out value="${user.password}"/></td>
 
-                    <%--<td><a href="editUser?id=${user.id}">Edit</a></td>--%>
+                    <td><a href="editUser?id=${user.user_id}">Edit</a></td>
                     <td><a href="deleteUser?id=${user.user_id}">Delete</a></td>
                 </tr>
             </c:forEach>

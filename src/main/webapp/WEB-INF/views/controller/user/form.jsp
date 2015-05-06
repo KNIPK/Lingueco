@@ -15,19 +15,20 @@
 </head>
 <body>
 <h1>REGISTER</h1>
+
 <form:form commandName="user" action="/user/saveUser" method="post">
     <table>
-        <form:hidden path="user_id"/>
+        <form:hidden path="user_id" value="${userObject.user_id}"/>
 
 
         <tr>
             <td><label>username : </label></td>
-            <td> <form:input path="username"/></td>
+            <td> <form:input path="username" value="${userObject.username}"/></td>
         </tr>
 
         <tr>
             <td><label>password </label></td>
-            <td><form:input  path="password"/></td>
+            <td><form:input  path="password" value="${userObject.password}"/></td>
         </tr>
 
         <tr>

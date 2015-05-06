@@ -40,7 +40,9 @@
                     <td><c:out value="${role.user_id}"/></td>
                     <td><c:out value="${role.role}"/></td>
 
-                        <%--<td><a href="editUser?id=${user.id}">Edit</a></td>--%>
+
+                        <td><a href="editUser?id=${role.user_id}">Edit</a></td>
+                    <%--DELETING 1ST USER ROLE LATER USER - SQL KEY--%>
                     <td><a href="deleteUser_Role?id=${role.user_role_id}">Delete</a></td>
                 </tr>
             </c:forEach>
