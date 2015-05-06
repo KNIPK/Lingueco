@@ -1,0 +1,16 @@
+//CREATE TABLE user_roles (
+//        user_role_id INT(11) NOT NULL AUTO_INCREMENT,
+//    user_id INT(20) NOT NULL,
+//    ROLE VARCHAR(45) NOT NULL,
+//    PRIMARY KEY (user_role_id),
+//UNIQUE KEY uni_user_id_role (ROLE,user_id),
+//    KEY fk_user_id_idx (user_id);
+
+
+CREATE TABLE `users` (
+  `user_id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `username` varchar(40) NOT NULL,
+  `password` varchar(40) NOT NULL,
+  `enbaled` tinyint(1) NOT NULL,
+  PRIMARY KEY  (`user_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1
