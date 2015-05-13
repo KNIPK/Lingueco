@@ -13,14 +13,14 @@ import org.springframework.data.neo4j.rest.SpringRestGraphDatabase;
 
 @Configuration
 @PropertySource(value="classpath:/properties/database.properties")
-@EnableNeo4jRepositories(basePackages="com.lingueco.repository")
+@EnableNeo4jRepositories(basePackages="com.lingueco")
 public class Neo4jConfig extends Neo4jConfiguration {
 	
 	@Resource
 	public Environment env;
 
 	public Neo4jConfig() {
-		setBasePackage("com.lingueco.repository");
+		setBasePackage("com.lingueco");
 	}
 	
     @Bean

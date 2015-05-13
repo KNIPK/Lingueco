@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.lingueco.repository.Word;
-import com.lingueco.repository.WordList;
-import com.lingueco.repository.WordListRepository;
-import com.lingueco.repository.WordRepository;
+import com.lingueco.wordlists.entity.Word;
+import com.lingueco.wordlists.entity.WordList;
+import com.lingueco.wordlists.dao.WordListRepository;
+import com.lingueco.wordlists.dao.WordRepository;
 
 @Controller
 @RequestMapping("/wordlists")

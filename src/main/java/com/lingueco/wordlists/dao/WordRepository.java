@@ -1,5 +1,6 @@
-package com.lingueco.repository;
+package com.lingueco.wordlists.dao;
 
+import com.lingueco.wordlists.entity.Word;
 import org.springframework.data.neo4j.annotation.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

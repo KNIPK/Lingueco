@@ -1,10 +1,9 @@
-package com.lingueco.repository;
+package com.lingueco.wordlists.entity;
 
 import java.util.HashSet;
 import java.util.Set;
 
 import org.neo4j.graphdb.Direction;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.neo4j.annotation.Fetch;
 import org.springframework.data.neo4j.annotation.GraphId;
 import org.springframework.data.neo4j.annotation.Indexed;
