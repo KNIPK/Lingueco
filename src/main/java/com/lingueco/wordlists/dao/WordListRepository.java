@@ -1,6 +1,5 @@
 package com.lingueco.wordlists.dao;
 
-import com.lingueco.repository.Person;
 import com.lingueco.wordlists.entity.Word;
 import com.lingueco.wordlists.entity.WordList;
 import org.springframework.data.neo4j.annotation.Query;
@@ -12,10 +11,7 @@ public interface WordListRepository extends CrudRepository<WordList, String> {
 	//Jak na razie wypisuje wszystkie listy. Potem uwzglednimy uzytkownikow
     @Query("MATCH (a:WordList) Return a ORDER BY a.name")
     Iterable<WordList> getListsByUser();
-    
-    @Query("MATCH (a:WordList {name:{name}}) MATCH (a)-[:OWNS]-(p:Person) RETURN p")
-    Iterable<Person> getOwners(@Param("name") String name);
-    
+
     @Query("MATCH (wl:WordList {name:{name}}) RETURN wl")
     WordList getListByName(@Param("name") String name);
 

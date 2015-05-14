@@ -29,8 +29,7 @@ public interface WordRepository extends CrudRepository<Word, String> {
 	@Query("MATCH (a:Word {value:{translationValue}})-[relW:WORD]-(wl:WordList {name:{listName}}) DELETE relW")
 	void removeWordFromList(@Param("translationValue")String translationValue, @Param("listName")String listName);
 	
-/*	@Query("MATCH (w:Word {value:{val}}) MATCH (w)-[relT:TRANSLATION]-(t:Word) MATCH (w)-[relW:WORD]-(wl:WordList {name:{listName}}) Delete relW,relT")
-*/	@Query("MATCH (w:Word {value:{val}})-[relT:TRANSLATION]-(t:Word) MATCH (w)-[relW:WORD]-(wl:WordList {name:{listName}}) Delete relW,relT")
+	@Query("MATCH (w:Word {value:{val}})-[relT:TRANSLATION]-(t:Word) MATCH (w)-[relW:WORD]-(wl:WordList {name:{listName}}) Delete relW,relT")
 	void deleteWord(@Param("val")String wordValue, @Param("listName")String listName);
 
 	@Query("MATCH (a:Word {value:{val}})-[r:WORD]-(wl:Wordlist {name:{listName}}) DELETE r")
