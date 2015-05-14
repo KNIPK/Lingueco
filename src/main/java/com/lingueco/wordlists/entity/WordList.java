@@ -18,20 +18,13 @@ public class WordList {
 
 	@Indexed(unique = true)
 	public String name;
-
 	public String desc;
-
 	public String langA;
-
 	public String langB;
-
 	public int privacy;
 	// 0 - private, 1 - public
-
 	public int wordsAmount;
 
-	public double learningRate;
-	
 	@RelatedTo(type = "WORD", direction = Direction.OUTGOING)
 	public @Fetch Set<Word> words;
 
@@ -92,14 +85,6 @@ public class WordList {
 		this.wordsAmount = wordsAmount;
 	}
 
-	public double getLearningRate() {
-		return learningRate;
-	}
-
-	public void setLearningRate(double learningRate) {
-		this.learningRate = learningRate;
-	}
-
 	public Long getId() {
 		return id;
 	}
@@ -121,7 +106,7 @@ public class WordList {
 				+ id + ", name=" + name + ", desc=" + desc + ", langA=" + langA
 				+ ", langB=" + langB + ", privacy=" + privacy
 				+ ", wordsAmount=" + wordsAmount + ", learningRate="
-				+ learningRate + ", words=" + words + "]";
+				+ ", words=" + words + "]";
 	}
 
 

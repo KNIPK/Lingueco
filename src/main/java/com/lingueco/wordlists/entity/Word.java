@@ -14,9 +14,6 @@ import org.springframework.data.neo4j.annotation.RelatedTo;
 @NodeEntity
 public class Word {
 
-	@Autowired
-	WordRepository wordRepository;
-	
 	@GraphId
 	public Long id;
 
@@ -24,13 +21,9 @@ public class Word {
 	public String value;	
 	public String lang;
 
-
-	public double learningRate;
-
 	@RelatedTo(type = "WORD", direction = Direction.INCOMING)
 	public @Fetch Set<WordList> lists;
 	
-
 
 	public Word() {
 	}
@@ -40,11 +33,6 @@ public class Word {
 		this.lang = lang;
 	}
 
-
-	public void translation(Word w) {
-		if(!wordRepository.isRelatedTranslation(this.value, w.getValue()) )
-			wordRepository.createRelTranslation(this.value, w.getValue(), this.getLang(), w.getLang());
-	}
 
 	public Long getId() {
 		return id;
@@ -70,14 +58,6 @@ public class Word {
 		this.lang = lang;
 	}
 
-	public double getLearningRate() {
-		return learningRate;
-	}
-
-	public void setLearningRate(double learningRate) {
-		this.learningRate = learningRate;
-	}
-
 	public Set<WordList> getLists() {
 		return lists;
 	}
@@ -91,7 +71,7 @@ public class Word {
 	@Override
 	public String toString() {
 		return "Word [id=" + id + ", value=" + value + ", lang=" + lang
-				+ ", learningRate=" + learningRate + ", lists=" + lists+"]";
+				+ ", learningRate=" + ", lists=" + lists+"]";
 	}
 	
 	
