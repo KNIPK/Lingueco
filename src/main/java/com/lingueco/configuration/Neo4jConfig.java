@@ -15,18 +15,18 @@ import org.springframework.data.neo4j.rest.SpringRestGraphDatabase;
 @PropertySource(value="classpath:/properties/database.properties")
 @EnableNeo4jRepositories(basePackages="com.lingueco")
 public class Neo4jConfig extends Neo4jConfiguration {
-	
+
 	@Resource
 	public Environment env;
 
 	public Neo4jConfig() {
 		setBasePackage("com.lingueco");
 	}
-	
+
     @Bean
     public SpringRestGraphDatabase graphDatabaseService() {
-    	
-    	return new SpringRestGraphDatabase(env.getProperty("db.location"), env.getProperty("db.user"), env.getProperty("db.password"));    	
+
+    	return new SpringRestGraphDatabase(env.getProperty("db.location"), env.getProperty("db.user"), env.getProperty("db.password"));
     }
-    
+
 }
