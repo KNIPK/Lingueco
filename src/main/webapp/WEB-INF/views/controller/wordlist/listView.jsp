@@ -8,8 +8,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
 <title>${wordlist.name}</title>
 </head>
-<body>
-
 
 <h1>${wordlist.name} (${wordlist.wordsAmount})</h1>
 <h4>${wordlist.desc}</h4>
@@ -29,16 +27,26 @@
 				            			${!loopStatus.last?'/':''}
 				            		</c:forEach>
 				            	</td>
-<tr>
+							<tr>
 				</c:forEach>
 
-			<tr>
-				<td><input name="valA" /></td>
-				<td><input name="valB" /></td>
-				<td><input type="submit" /></td>
-			</tr>
+				<tr>
+					<td><input name="valA" /></td>
+					<td><input name="valB" /></td>
+					<td><input type="submit" /></td>
+				</tr>
 		</table>
 		<input type="hidden" name="name" value="${wordlist.name}" />
+</form>
+
+<br />
+
+Wczytaj slowka z pliku:
+
+<form method="POST" action="${pageContext.request.contextPath}/wordlists/${wordlist.name}/upload/" enctype="multipart/form-data">
+	<input type="hidden" name="listName" value="${wordlist.name}" />
+	<input type="file" name="multipart"/>
+	<input type="submit"/>
 </form>
 
 <a href="${pageContext.request.contextPath}/wordlists/${wordlist.name}/edit">Edytuj liste</a>
