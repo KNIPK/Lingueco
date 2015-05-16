@@ -1,3 +1,6 @@
+src/main/resources/properties/database.properties
+src/main/java/com/lingueco/configuration/Neo4jConfig.java
+
 bin/
 .settings/
 target/

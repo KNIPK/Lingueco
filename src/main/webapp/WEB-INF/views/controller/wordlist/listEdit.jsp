@@ -23,8 +23,9 @@
 			</tr>
 		</table>
 				<input type="hidden" name="oldName" value="${wordlist.name}" />
-		<input type="submit" />
+		<input type="submit" value="Dodaj"/>
 	</form>
+
 
 <a href="${pageContext.request.contextPath}/wordlists/${wordlist.name}/delete/">Usun liste!</a>
 </body>
