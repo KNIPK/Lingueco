@@ -115,13 +115,14 @@ public class WordListController {
 		Scanner scanner = new Scanner(file);
 
 		String line;
-
 		while(scanner.hasNextLine()) {
 			line = scanner.nextLine();
 
 			String words[] = line.trim().split("-");
-			if(words.length == 2)
-				wordService.addWord(listName,words[0],words[1]);
+			for(int i=1;i<words.length;i++){
+				wordService.addWord(listName,words[0],words[i]);
+			}
+
 		}
 
 		return "redirect:/wordlists/";
