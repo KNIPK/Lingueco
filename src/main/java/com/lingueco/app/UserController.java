@@ -15,7 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.security.Principal;
 import java.util.List;
 
-
 @Controller
 @RequestMapping("/user")
 public class UserController {
@@ -24,13 +23,12 @@ public class UserController {
 
     @Autowired
     private User_service userService;
+
     @Autowired
     private User_Role_service user_role_service;
 
 
-    // METHODS ###################################
-
-    @RequestMapping("welcome")
+    @RequestMapping("/welcome")
     public ModelAndView executeSecurity(ModelMap model, Principal principal) {
 
         String name = principal.getName();
@@ -40,15 +38,11 @@ public class UserController {
 
     }
 
-    @RequestMapping("login")
+    @RequestMapping(" ")
     public ModelAndView login() {
-
-
         return new ModelAndView(viewPath + "login");
     }
 
-
-    //#############################################
     @RequestMapping("admin")
     public ModelAndView admin() {
 
@@ -59,7 +53,6 @@ public class UserController {
     public ModelAndView user() {
         return new ModelAndView(viewPath + "index");
     }
-    //##############################################
 
 
     @RequestMapping("fail2login")
@@ -77,7 +70,7 @@ public class UserController {
 
     }
 
-    @RequestMapping(" ")
+    @RequestMapping("register")
     public ModelAndView createUser(@ModelAttribute User user) {
         return new ModelAndView(viewPath + "form");
     }
@@ -85,27 +78,14 @@ public class UserController {
     @RequestMapping("saveUser")
     public ModelAndView saveUser(@ModelAttribute User user, Role role) {
 
+        user.setEnabled(1);
+        userService.createUser(user);
 
-        if (user.getUser_id() == 0) {
+        role.setUser_id(user.getUser_id());
+        role.setRole("ROLE_ADMIN");
+        user_role_service.createUser_role(role);
 
-            // TO COMPLETE
-            user.setEnabled(1);
-            userService.createUser(user);
-            role.setUser_id(user.getUser_id());
-            role.setRole("ROLE_USER");
-            user_role_service.createUser_role(role);
-            // TO COMPLETE
-        } else {
-            userService.updateUser(user);
-        }
-        return new ModelAndView("redirect:getAllUsers");
-    }
-
-
-    @RequestMapping("editUser")
-    public ModelAndView editUser(@RequestParam long id, @ModelAttribute User user) {
-        user = userService.getUser(id);
-        return new ModelAndView(viewPath + "form", "userObject", user);
+        return new ModelAndView(viewPath + "login");
     }
 
 
@@ -144,5 +124,15 @@ public class UserController {
         user_role_service.deleteUser_role(id);
     }
 
-
 }
+
+
+//CREATE TABLE user_roles (
+//        user_role_id INT(11) NOT NULL AUTO_INCREMENT,
+//    user_id INT(20) NOT NULL,
+//    ROLE VARCHAR(45) NOT NULL,
+//    PRIMARY KEY (user_role_id),
+//UNIQUE KEY uni_user_id_role (ROLE,user_id),
+//    KEY fk_user_id_idx (user_id);
+
+
